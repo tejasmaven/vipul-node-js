@@ -175,7 +175,7 @@ router.post('/photo-upload/:id', upload.single('photo'),(req, res) => {
 				try{
 					fs.unlinkSync(userOldPhoto);
 				}catch(err){
-					return res.status(500).send({error:err});
+					//return res.status(500).send({error:err});
 				}
 				res.status(200).send(user);
 			});
