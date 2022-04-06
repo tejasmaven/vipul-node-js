@@ -19,8 +19,10 @@ const userScheme = new mongoose.Schema({
 		required: true,
 		min: 3,
 		max: 1024
-	}
-	,
+	},
+	photo: {
+		type: String		
+	},
 	date: {
 		type: Date,
 		default: Date.now

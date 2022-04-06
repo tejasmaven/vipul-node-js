@@ -6,14 +6,30 @@ var VerifyToken = require(__root + 'auth/VerifyToken');
 var User = require(__root + 'user/UserSchema');
 var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
+const multer = require('multer'); //for image upload
+const fs = require('fs');
 
 /*Parse body data to json format*/
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
+
+var storage = multer.diskStorage({
+   destination: function (req, file, cb) {	   
+      //cb(null, 'uploads');
+	  cb(null, 'public/uploads');
+	  
+   },
+   filename: function (req, file, cb) {	   
+      cb(null, Date.now() + '-' + file.originalname);
+   }
+});
+var upload = multer({ storage: storage });
+
+
 // RETURNS ALL THE USERS IN THE DATABASE
-//router.get('/', function (req, res) {
-router.get('/', VerifyToken, function (req, res, next) {
+router.get('/', function (req, res) {
+//router.get('/', VerifyToken, function (req, res, next) {
     User.find({}, { password: 0 }, function (err, users) {
         if (err) return res.status(500).send({error : "There was a problem finding the users."});
         res.status(200).send(users);
@@ -132,5 +148,41 @@ router.put('/:id', VerifyToken, function (req, res, next) {
 	});
 });
 
+
+router.post('/photo-upload/:id', upload.single('photo'),(req, res) => {
+	const image = req.file;  
+	if(image.fieldname == 'photo'){
+		//var thefile = req.file.destination+'/'+req.file.filename;
+		var thefile = req.file.filename;
+		var userID = req.params.id;
+		var userOldPhoto = '';
+		try{
+			User.findById(userID, {password:0}, function (err, user) {
+				if(user && user.photo){
+					var substring = 'public/';
+					var userPhoto = user.photo;
+					if(userPhoto.includes(substring)){
+						userOldPhoto = user.photo;
+					}else{
+						userOldPhoto = req.file.destination+'/'+user.photo;
+					}				
+				}
+			});
+			
+			User.findByIdAndUpdate(userID, {'photo':thefile}, {new: true}, function (err, user) {
+				if (err) return res.status(500).send({error : "There was a problem updating the user."});
+				//if(userOldPhoto)console.log('OLD photo : '+userOldPhoto);
+				try{
+					fs.unlinkSync(userOldPhoto);
+				}catch(err){
+					return res.status(500).send({error:err});
+				}
+				res.status(200).send(user);
+			});
+		}catch(err){
+			return res.status(500).send({error:err});
+		}		
+	}
+});
 
 module.exports = router;

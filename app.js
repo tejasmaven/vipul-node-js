@@ -1,7 +1,15 @@
-var express = require('express');
-var app = express();
-var db = require('./db');
+const express = require('express');
+const app = express();
+const db = require('./db');
+var http = require('http');
 global.__root   = __dirname + '/';
+
+//app.use(express.json()); //to solve json parse problem
+
+app.use(express.static(global.__root+'public')); // allow public folder to access from outside
+app.use(express.urlencoded({extended: true}));
+app.use('/images',express.static(global.__root+'public/uploads'));
+//http://localhost:3001/images/1649159920869-5576035.webp
 
 app.get('/api/v1', function (req, res) {
   res.status(200).send('API works.');

@@ -2,7 +2,8 @@ const dotenv = require('dotenv'); //enviroment settings
 const mongoose = require('mongoose'); //mongo DB database
 dotenv.config();
 
-const server = process.env.DB_CONNECTION;
+//const server = process.env.DB_CONNECTION;
+const server = process.env.DB_CONNECTION_LOCAL
 //mongoose.connect('mongodb://127.0.0.1:27017/securing-rest-apis-with-jwt', { useMongoClient: true });
 //mongoose.connect(`${server}`, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
  
