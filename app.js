@@ -11,6 +11,10 @@ app.use(express.urlencoded({extended: true}));
 app.use('/images',express.static(global.__root+'public/uploads'));
 //http://localhost:3001/images/1649159920869-5576035.webp
 
+app.get('/', function (req, res) {
+  res.status(200).send('Main Page.');
+});
+
 app.get('/api/v1', function (req, res) {
   res.status(200).send('API works.');
 });
