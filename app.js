@@ -27,6 +27,6 @@ var AuthController = require(__root + 'auth/AuthController');
 app.use('/api/v1/auth', AuthController);
 
 var PostController = require(__root + 'posts/PostsController');
-//app.use('/api/v1/cms', PostController);
+app.use('/api/v1/cms', PostController);
 
 module.exports = app;
