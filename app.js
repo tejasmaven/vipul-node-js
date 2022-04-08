@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
+const cors = require('cors'); //to solve cross browser problem
 const db = require('./db');
 var http = require('http');
 global.__root   = __dirname + '/';
 
 //app.use(express.json()); //to solve json parse problem
 
+app.use(cors()); //to solve cross browser problem
 app.use(express.static(global.__root+'public')); // allow public folder to access from outside
 app.use(express.urlencoded({extended: true}));
 app.use('/images',express.static(global.__root+'public/uploads'));
