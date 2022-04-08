@@ -49,13 +49,15 @@ router.get('/posts/:paged?', VerifyToken, async function (req, res, next) {
 
 
 // GETS A SINGLE USER FROM THE DATABASE
-//router.get('/:id', function (req, res) {
-router.get('/:id', VerifyToken, function (req, res, next) {
-	User.findById(req.params.id, {password:0}, function (err, user) {
-        if (err) return res.status(500).send({error : "There was a problem finding the user."});
-        if (!user) return res.status(404).send({error : "No user found."});
-        res.status(200).send(user);
-    });
+//router.get('/:slug', function (req, res) {
+router.get('/:slug', VerifyToken, function (req, res, next) {
+	var slug = req.params.slug;
+	var query = {$and:[{post_type : 'post'},{slug : slug}]};
+	Posts.findOne(query)
+	.exec(function(err, post) {
+        if (err) return res.status(500).send({error : "There was a problem finding the list."});
+        res.status(200).send({post});
+    });	
 });
 
 // CREATES A NEW USER
