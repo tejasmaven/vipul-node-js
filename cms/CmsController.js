@@ -11,7 +11,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 // RETURNS ALL THE Posts IN THE DATABASE
-//router.get('/pages', function (req, res) {
 router.get('/pages/:paged?', VerifyToken, async function (req, res, next) {
 	var paged = parseInt(req.params.paged);
 	if(!paged)paged=1;
@@ -29,7 +28,6 @@ router.get('/pages/:paged?', VerifyToken, async function (req, res, next) {
     });
 });
 
-//router.get('/posts', function (req, res) {
 router.get('/posts/:paged?', VerifyToken, async function (req, res, next) {
 	var paged = parseInt(req.params.paged);
 	if(!paged)paged=1;
@@ -49,7 +47,6 @@ router.get('/posts/:paged?', VerifyToken, async function (req, res, next) {
 
 
 // GETS A SINGLE USER FROM THE DATABASE
-//router.get('/:slug', function (req, res) {
 router.get('/:slug', VerifyToken, function (req, res, next) {
 	var slug = req.params.slug;
 	var query = {$and:[{post_type : 'post'},{slug : slug}]};
@@ -61,7 +58,6 @@ router.get('/:slug', VerifyToken, function (req, res, next) {
 });
 
 // CREATES A NEW USER
-//router.post('/', function (req, res) {
 router.post('/', VerifyToken, function(req, res, next) {
 	var dataValidator = {
 		title: 'required|minLength:2',
@@ -116,7 +112,6 @@ router.post('/', VerifyToken, function(req, res, next) {
 });
 
 // DELETES A USER FROM THE DATABASE
-//router.delete('/:id', function (req, res) {
 router.delete('/:id', VerifyToken, function (req, res, next) {
     Posts.findByIdAndRemove(req.params.id, function (err, post) {
         if (err) return res.status(500).send({error : "There was a problem deleting the list data."});
@@ -127,7 +122,6 @@ router.delete('/:id', VerifyToken, function (req, res, next) {
 
 // UPDATES A SINGLE USER IN THE DATABASE
 // Added VerifyToken middleware to make sure only an authenticated user can put to this route
-//router.put('/:id', function (req, res) {
 router.put('/:id', VerifyToken, function (req, res, next) {
 	var postID = req.params.id;
 	
