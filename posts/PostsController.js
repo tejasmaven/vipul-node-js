@@ -15,7 +15,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 // RETURNS ALL THE Posts IN THE DATABASE
-router.get('/pages/:paged?', VerifyToken, async function (req, res, next) {
+/*router.get('/pages/:paged?', VerifyToken, async function (req, res, next) {
 	var paged = parseInt(req.params.paged);
 	if(!paged)paged=1;
 	var limit = (req.limit) ? req.limit : 10;
@@ -31,12 +31,12 @@ router.get('/pages/:paged?', VerifyToken, async function (req, res, next) {
         if (err) return res.status(500).send({error : "There was a problem finding the list."});
         res.status(200).send({limit:limit, total_records:totalPosts, total_pages:totalPages, current_page:paged, data:posts});
     });
-});
+});*/
 
-//http://localhost:3001/api/v1/cms/POST-TYPE/PAGINATION-NUMBER/POST-STATUS/
-//http://localhost:3001/api/v1/cms/page/1/publish/
-//http://localhost:3001/api/v1/cms/post/1/draft/
-router.get('/:posttype?/:paged?/:withstatus?', VerifyToken, async function (req, res, next) {
+//http://localhost:3001/api/v1/cms/list/POST-TYPE/PAGINATION-NUMBER/POST-STATUS/
+//http://localhost:3001/api/v1/cms/list/page/1/publish/
+//http://localhost:3001/api/v1/cms/list/post/1/draft/
+router.get('/list/:posttype?/:paged?/:withstatus?', VerifyToken, async function (req, res, next) {
 	var posttype = (req.params.posttype) ? req.params.posttype : 'post';
 	var paged = parseInt(req.params.paged);
 	if(!paged)paged=1;
@@ -116,6 +116,7 @@ router.get('/:posttype?/:paged?/:withstatus?', VerifyToken, async function (req,
 
 
 // GETS A SINGLE USER FROM THE DATABASE
+//http://localhost:3001/api/v1/cms/remove-property-from-an-object-02
 router.get('/:slug', VerifyToken, async function (req, res, next) {
 	var slug = req.params.slug;
 	//var query = {$and:[{post_type : 'post'},{post_status : 'publish'},{slug : slug}]};

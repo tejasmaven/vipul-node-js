@@ -15,12 +15,12 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 // RETURNS ALL THE IN THE DATABASE
-//http://localhost:3001/api/v1/category/CATEGORY_TYPE/PAGINATION-NUMBER/RELAED-POST-STATUS/
-//http://localhost:3001/api/v1/category/category/1/publish/
-//Get Category by slug
-//http://localhost:3001/api/v1/category/category/1/publish/category-02
-//http://localhost:3001/api/v1/category/CATEGORY_TYPE/PAGINATION-NUMBER/RELAED-POST-STATUS/CATEGORY-SLUG/
-router.get('/:cattype/:paged?/:withstatus?/:slug?', VerifyToken, async function (req, res, next) {
+//http://localhost:3001/api/v1/category/list/CATEGORY_TYPE/PAGINATION-NUMBER/RELAED-POST-STATUS/
+//http://localhost:3001/api/v1/category/list/category/1/publish/
+//Get Category by Slug with post list
+//http://localhost:3001/api/v1/category/list/CATEGORY_TYPE/PAGINATION-NUMBER/RELAED-POST-STATUS/CATEGORY-SLUG
+//http://localhost:3001/api/v1/category/list/category/1/publish/category-02
+router.get('/list/:cattype/:paged?/:withstatus?/:slug?', VerifyToken, async function (req, res, next) {
 	var cattype = req.params.cattype;
 	var paged = parseInt(req.params.paged);
 	var withstatus = req.params.withstatus ? req.params.withstatus : '';
@@ -35,7 +35,6 @@ router.get('/:cattype/:paged?/:withstatus?/:slug?', VerifyToken, async function 
 	var total = await Category.find(query).count({});
 	var totalPages = (Math.ceil(total/limit));
 	var skipPosts = (paged-1) * limit;
-	console.log(query);
 	
 	var queryvar = [
 	   { $match: query },
@@ -96,8 +95,8 @@ router.get('/:cattype/:paged?/:withstatus?/:slug?', VerifyToken, async function 
 });
 
 // GETS A SINGLE FROM THE DATABASE
-//http://localhost:3001/api/v1/category/detail/category-02
-/*router.get('detail/:slug', VerifyToken, function (req, res, next) {
+//http://localhost:3001/api/v1/category/category-02
+router.get('/:slug', VerifyToken, function (req, res, next) {
 	var slug = req.params.slug;
 	var query = {slug : slug};
 	Category.findOne(query)
@@ -109,7 +108,7 @@ router.get('/:cattype/:paged?/:withstatus?/:slug?', VerifyToken, async function 
 	
 	
 });
-*/
+
 
 // CREATES A NEW
 router.post('/', VerifyToken, function(req, res, next) {
