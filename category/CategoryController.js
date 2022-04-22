@@ -67,11 +67,12 @@ router.get('/list/:cattype/:paged?/:withstatus?/:slug?', VerifyToken, async func
 		if(withstatus == 'all'){
 			//console.log(query);
 		}else if(withstatus != ''){
-			postPopulatequery.match = { post_status: { $in: withstatus }, 'post': {'$ne': ''} };
+			//postPopulatequery.match = { post_status: { $in: withstatus }, 'post': {'$ne': ''} };
+			postPopulatequery.match = { post_status: { $in: withstatus } };
 		}
 		
         await Posts.populate(category_data, postPopulatequery);
-		await User.populate(category_data, {path: "posts.post.author",  select:  {__v: 0, date:0, updated_date:0, password:0} });
+		await User.populate(category_data, {path: "posts.post.author", match: {'post': {'$ne': ''}},  select:  {__v: 0, date:0, updated_date:0, password:0} });
 		if(slug){
 			if(category_data && category_data[0]){
 				return res.status(200).send(category_data[0]);
