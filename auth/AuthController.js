@@ -18,11 +18,13 @@ var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
 
 router.post('/login', function(req, res) {
+	console.log(req.body);
 	const v = new Validator(req.body, {
 		email: 'required|email',
 		password: 'required|minLength:5'
 	});
 	
+	// console.log(req.body);
 	v.check().then(async function (matched) {
 		if(!matched) return res.status(422).send({auth: false, token: null, error :v.errors});
 		
@@ -99,7 +101,6 @@ router.post('/register', function(req, res) {
 });
 
 router.get('/myprofile', VerifyToken, function(req, res, next) {
-console.log(req.userId);
   User.findById(req.userId, { password: 0 }, function (err, user) {
     if (err) return res.status(500).send({error:"There was a problem finding the user."});
     if (!user) return res.status(404).send({error:"No user found."});

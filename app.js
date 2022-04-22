@@ -31,4 +31,7 @@ app.use('/api/v1/auth', AuthController);
 var PostController = require(__root + 'posts/PostsController');
 app.use('/api/v1/cms', PostController);
 
+var CategoryController = require(__root + 'category/CategoryController');
+app.use('/api/v1/category', CategoryController);
+
 module.exports = app;

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 //add database table details (schema)
-const postsScheme = new mongoose.Schema({
+const categoryScheme = new mongoose.Schema({
 	title: {
 		type: String,
 		required: true,
@@ -12,17 +12,12 @@ const postsScheme = new mongoose.Schema({
 	slug: {
 		type: String,
 		required: true,
-		unique: true,
 		min: 1,
 		max: 255
-	},
-	excerpt: {
-		type: String		
 	},
 	content: {
 		type: String
 	},
-	/*category: { type: Schema.Types.ObjectId, ref: 'Category' },*/
 	author: { type: Schema.Types.ObjectId, ref: 'User' },
 	meta_title: {
 		type: String
@@ -33,25 +28,17 @@ const postsScheme = new mongoose.Schema({
 	meta_key: {
 		type: String
 	},
-	post_type: {
+	type: {
 		type: String,
 		required: true,
-		default: 'post'
+		default: 'category'
 	},
-	post_status: {
+	status: {
 		type: String,
 		default: 'publish'		
 	},
 	photo: {
 		type: String	
-	},
-	template: {
-		type: String,
-		default: ''
-	},
-	password: {
-		type: String,
-		default: ''
 	},
 	updated_date: {
 		type: Date,
@@ -63,4 +50,4 @@ const postsScheme = new mongoose.Schema({
 	}
 });
 
-module.exports = mongoose.model('Post',postsScheme);
+module.exports = mongoose.model('Category',categoryScheme);
